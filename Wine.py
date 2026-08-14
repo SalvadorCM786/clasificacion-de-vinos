@@ -8,8 +8,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, confusion_matrix
 
-# Datos
-
 st.write(''' # Diplomado Superior en Ciencia y Analítica de Datos ''')
 st.write(''' Módulo IV: Big Data ''')
 st.write(''' ***Profesora:*** DRA. EN I. Ana Estela Pérez Mejía
@@ -32,7 +30,7 @@ X = pd.DataFrame(wine.data, columns=wine.feature_names)
 Y = pd.Series(wine.target)
 nombres_clases = ['Vino tipo 1', 'Vino tipo 2', 'Vino tipo 3']
 
-# columnas
+# Nombre de las columnas
 nombres_columnas_es = {
     'alcohol': 'Alcohol',
     'malic_acid': 'Ácido málico',
@@ -51,6 +49,8 @@ nombres_columnas_es = {
 X = X.rename(columns=nombres_columnas_es)
 
 st.header('Datos de evaluación')
+st.caption('Ingresa los valores de composición química del vino que quieres clasificar. '
+           'Estos datos serán procesados por el modelo para predecir a cuál de los 3 cultivares pertenece.')
 
 def user_input_features():
     col1, col2 = st.columns(2)
@@ -86,10 +86,10 @@ def user_input_features():
 
 df = user_input_features()
 
-# Separar en entrenamiento y prueba ---
+# Separar en entrenamiento y prueba
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0, stratify=Y)
 
-# Pipeline: escalado + Random Forest ---
+# Pipeline: escalado + Random Forest
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('classifier', RandomForestClassifier(n_estimators=100, max_depth=6, random_state=0, n_jobs=-1))
@@ -97,36 +97,50 @@ pipeline = Pipeline([
 
 pipeline.fit(X_train, Y_train)
 
-# Métricas sobre datos de prueba ---
+# Métricas sobre datos de prueba
 Y_pred_test = pipeline.predict(X_test)
 accuracy = accuracy_score(Y_test, Y_pred_test)
 
-# Validación cruzada (5 folds) sobre datos de entrenamiento ---
+# Validación cruzada (5 folds) sobre datos de entrenamiento
 cv_scores = cross_val_score(pipeline, X_train, Y_train, cv=5, scoring='accuracy')
 
-# Predicción sobre la entrada del usuario ---
+# Predicción sobre la entrada del usuario
 prediction = pipeline.predict(df)[0]
 prediction_proba = pipeline.predict_proba(df)[0]
 
 st.subheader('Predicción')
+st.caption('Muestra el cultivar de vino que el modelo determinó como más probable, '
+           'según los valores ingresados en el formulario.')
 st.success(f'Cultivar predicho: **{nombres_clases[prediction]}**')
 
 st.subheader('Probabilidad por clase')
+st.caption('Indica qué tan seguro está el modelo de cada posible clase. Una probabilidad alta en una sola '
+           'clase refleja mayor confianza en la predicción; probabilidades repartidas entre varias clases '
+           'sugieren un caso más ambiguo.')
 proba_df = pd.DataFrame({'Cultivar': nombres_clases, 'Probabilidad': prediction_proba})
 st.bar_chart(proba_df.set_index('Cultivar'))
 
 st.subheader('Desempeño del modelo')
+st.caption('Resume qué tan bien clasifica el modelo en general, usando datos que no vio durante el '
+           'entrenamiento. La precisión de prueba mide los aciertos en una sola partición de datos, mientras '
+           'que la validación cruzada (5-fold) promedia el desempeño en 5 particiones distintas, dando una '
+           'medida más confiable.')
 col1, col2 = st.columns(2)
 col1.metric('Precisión (prueba)', f'{accuracy:.2%}')
 col2.metric('Precisión promedio (5-fold CV)', f'{cv_scores.mean():.2%}')
 
 st.subheader('Matriz de confusión (datos de prueba)')
+st.caption('Compara las predicciones del modelo contra las clases reales en el conjunto de prueba. La diagonal '
+           'muestra los aciertos; los valores fuera de la diagonal indican en qué clases se equivocó el modelo '
+           'y con cuál las confundió.')
 cm = confusion_matrix(Y_test, Y_pred_test)
 cm_df = pd.DataFrame(cm, index=[f'Real: {c}' for c in nombres_clases],
                       columns=[f'Pred: {c}' for c in nombres_clases])
 st.dataframe(cm_df)
 
 st.subheader('Importancia de variables')
+st.caption('Muestra qué tanto contribuye cada característica química a la decisión del modelo. Las variables '
+           'con barras más altas son las que más influyen al distinguir entre los tres cultivares de vino.')
 importancias = pd.DataFrame({
     'Variable': X.columns,
     'Importancia': pipeline.named_steps['classifier'].feature_importances_
