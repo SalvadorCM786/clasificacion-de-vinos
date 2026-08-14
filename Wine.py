@@ -49,8 +49,8 @@ nombres_columnas_es = {
 X = X.rename(columns=nombres_columnas_es)
 
 st.header('Datos de evaluación')
-st.caption('Ingresa los valores de composición química del vino que quieres clasificar. '
-           'Estos datos serán procesados por el modelo para predecir a cuál de los 3 cultivares pertenece.')
+st.caption('''Ingresa los valores de composición química del vino que quieres clasificar. '''
+           '''Estos datos serán procesados por el modelo para predecir a cuál de los 3 cultivares pertenece.''')
 
 def user_input_features():
     col1, col2 = st.columns(2)
@@ -130,7 +130,7 @@ col2.metric('Precisión promedio (5-fold CV)', f'{cv_scores.mean():.2%}')
 
 st.subheader('Matriz de confusión (datos de prueba)')
 st.caption('Compara las predicciones del modelo contra las clases reales en el conjunto de prueba. La diagonal '
-           'muestra los aciertos; los valores fuera de la diagonal indican en qué clases se equivocó el modelo '
+           'muestra los aciertos, los valores fuera de la diagonal indican en qué clases se equivocó el modelo '
            'y con cuál las confundió.')
 cm = confusion_matrix(Y_test, Y_pred_test)
 cm_df = pd.DataFrame(cm, index=[f'Real: {c}' for c in nombres_clases],
