@@ -115,7 +115,7 @@ st.success(f'Cultivar predicho: **{nombres_clases[prediction]}**')
 st.subheader('Probabilidad por clase')
 st.caption('Indica qué tan seguro está el modelo de cada posible clase. Una probabilidad en una sola '
            'clase indica mayor confianza en la predicción, pero probabilidades repartidas entre varias clases '
-           'indica que no esta bien definido.')
+           'indica que no esta bien definido (Se adjunta en la entrega de la practica un archivo .txt con 3 ejemplos por clase).')
 proba_df = pd.DataFrame({'Cultivar': nombres_clases, 'Probabilidad': prediction_proba})
 st.bar_chart(proba_df.set_index('Cultivar'))
 
