@@ -50,7 +50,7 @@ X = X.rename(columns=nombres_columnas_es)
 
 st.header('Datos de evaluación')
 st.caption('''Ingresa los valores de composición química del vino que quieres clasificar. '''
-           '''Estos datos serán procesados por el modelo para predecir a cuál de los 3 cultivares pertenece.''')
+           '''Estos datos serán procesados por el modelo para predecir a cuál de los 3 cultivares pertenece  (Se adjunta en la entrega de la práctica un archivo Ejemplos de combinación.txt con 3 ejemplos por clase).''')
 
 def user_input_features():
     col1, col2 = st.columns(2)
@@ -115,7 +115,7 @@ st.success(f'Cultivar predicho: **{nombres_clases[prediction]}**')
 st.subheader('Probabilidad por clase')
 st.caption('Indica qué tan seguro está el modelo de cada posible clase. Una probabilidad en una sola '
            'clase indica mayor confianza en la predicción, pero probabilidades repartidas entre varias clases '
-           'indica que no esta bien definido (Se adjunta en la entrega de la práctica un archivo Ejemplos de combinación.txt con 3 ejemplos por clase).')
+           'indica que no esta bien definido.')
 proba_df = pd.DataFrame({'Cultivar': nombres_clases, 'Probabilidad': prediction_proba})
 st.bar_chart(proba_df.set_index('Cultivar'))
 
