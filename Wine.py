@@ -13,6 +13,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 st.write(''' # Diplomado Superior en Ciencia y Analítica de Datos ''')
 st.write(''' Módulo IV: Big Data ''')
 st.write(''' ***Profesora:*** DRA. EN I. Ana Estela Pérez Mejía
+         
 ***Alumno:*** Salvador Calderón Martínez ''')
 
 #Pactica
@@ -21,17 +22,17 @@ st.write(''' Instrucciones: Crear una app en Streamlit de algún modelo de predi
 
 # Descripción del modelo
 st.write(''' # Modelo de Clasificación de Vinos ''')
-st.write('''Este modelo predice el **cultivar (origen)** de un vino a partir de su composición
-química, usando un **Random Forest** entrenado con un pipeline de escalado y validación cruzada.
+st.write('''Este modelo predice el origen de un vino a partir de su composición
+química, usando un Random Forest entrenado con un pipeline de escalado y validación cruzada.
 El dataset clasifica los vinos en 3 clases distintas.''')
 
-# --- Cargar dataset clásico de Wine ---
+# dataset
 wine = load_wine()
 X = pd.DataFrame(wine.data, columns=wine.feature_names)
 Y = pd.Series(wine.target)
 nombres_clases = ['Vino tipo 1', 'Vino tipo 2', 'Vino tipo 3']
 
-# Renombrar columnas a nombres en español, sin guion bajo
+# columnas
 nombres_columnas_es = {
     'alcohol': 'Alcohol',
     'malic_acid': 'Ácido málico',
@@ -85,10 +86,10 @@ def user_input_features():
 
 df = user_input_features()
 
-# --- Separar en entrenamiento y prueba ---
+# Separar en entrenamiento y prueba ---
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0, stratify=Y)
 
-# --- Pipeline: escalado + Random Forest ---
+# Pipeline: escalado + Random Forest ---
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('classifier', RandomForestClassifier(n_estimators=100, max_depth=6, random_state=0, n_jobs=-1))
@@ -96,14 +97,14 @@ pipeline = Pipeline([
 
 pipeline.fit(X_train, Y_train)
 
-# --- Métricas sobre datos de prueba ---
+# Métricas sobre datos de prueba ---
 Y_pred_test = pipeline.predict(X_test)
 accuracy = accuracy_score(Y_test, Y_pred_test)
 
-# --- Validación cruzada (5 folds) sobre datos de entrenamiento ---
+# Validación cruzada (5 folds) sobre datos de entrenamiento ---
 cv_scores = cross_val_score(pipeline, X_train, Y_train, cv=5, scoring='accuracy')
 
-# --- Predicción sobre la entrada del usuario ---
+# Predicción sobre la entrada del usuario ---
 prediction = pipeline.predict(df)[0]
 prediction_proba = pipeline.predict_proba(df)[0]
 
