@@ -109,14 +109,13 @@ prediction = pipeline.predict(df)[0]
 prediction_proba = pipeline.predict_proba(df)[0]
 
 st.subheader('Predicción')
-st.caption('Muestra el cultivar de vino que el modelo determinó como más probable, '
-           'según los valores ingresados en el formulario.')
+st.caption('Muestra el cultivar de vino que el modelo considero más probable de acuerdo con los valores ingresados.')
 st.success(f'Cultivar predicho: **{nombres_clases[prediction]}**')
 
 st.subheader('Probabilidad por clase')
-st.caption('Indica qué tan seguro está el modelo de cada posible clase. Una probabilidad alta en una sola '
-           'clase refleja mayor confianza en la predicción; probabilidades repartidas entre varias clases '
-           'sugieren un caso más ambiguo.')
+st.caption('Indica qué tan seguro está el modelo de cada posible clase. Una probabilidad en una sola '
+           'clase indica mayor confianza en la predicción, pero probabilidades repartidas entre varias clases '
+           'indica que no esta bien definido.')
 proba_df = pd.DataFrame({'Cultivar': nombres_clases, 'Probabilidad': prediction_proba})
 st.bar_chart(proba_df.set_index('Cultivar'))
 
