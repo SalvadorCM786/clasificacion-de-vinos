@@ -8,8 +8,18 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, confusion_matrix
 
+# Datos
+
+st.write(''' Diplomado Superior en Ciencia y Analítica de Datos ''')
+st.write(''' Módulo IV: Big Data ''')
+st.write(''' ***Profesora:*** DRA. EN I. Ana Estela Pérez Mejía
+***Alumno:*** Salvador Calderón Martínez ''')
+
+#Pactica
 st.write(''' # Práctica 2: Streamlit app ''')
 st.write(''' # Instrucciones: Crear una app en Streamlit de algún modelo de predicción, puede ser clasificación o regresión.''')
+
+# Descripción del modelo
 st.write(''' # Modelo de Clasificación de Vinos ''')
 st.write('''Este modelo predice el **cultivar (origen)** de un vino a partir de su composición
 química, usando un **Random Forest** entrenado con un pipeline de escalado y validación cruzada.
