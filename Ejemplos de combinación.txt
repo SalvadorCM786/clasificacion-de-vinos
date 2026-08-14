@@ -1,0 +1,15 @@
+                        Ejemplos de combinación
+Variable			Vino tipo 1	Vino tipo 2	Vino tipo 3
+Alcohol				13.74		12.28		13.15
+Ácido málico			2.01		1.93		3.33
+Ceniza				2.46		2.24		2.44
+Alcalinidad de ceniza		17.04		20.24		21.42
+Magnesio			106.34		94.55		99.31
+Fenoles totales			2.84		2.26		1.68
+Flavonoides			2.98		2.08		0.78
+Fenoles no flavonoides		0.29		0.36		0.45
+Proantocianinas			.90		1.63		1.15
+Intensidad de color		5.53		3.09		7.40
+Tono				1.06		1.06		0.68
+OD280/OD315			3.16		2.79		1.68
+Prolina				1115.71		519.51		629.90
